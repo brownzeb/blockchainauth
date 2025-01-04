@@ -276,22 +276,62 @@ import { onMounted, ref } from 'vue'
 const widgetContainer = ref(null)
 const widget = ref(null)
 
+// onMounted(() => {
+//   const script = document.createElement('script')
+//   script.type = 'text/javascript'
+//   script.async = true
+//   script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-screener.js'
+//   script.innerHTML = JSON.stringify({
+//     width: '100%', // Set to full width
+//     height: 550, // Increase height
+//     defaultColumn: 'overview',
+//     screener_type: 'crypto_mkt',
+//     displayCurrency: 'USD',
+//     colorTheme: 'light',
+//     locale: 'en',
+//   })
+//   widgetContainer.value.appendChild(script)
+// })
+
 onMounted(() => {
   const script = document.createElement('script')
   script.type = 'text/javascript'
   script.async = true
   script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-screener.js'
+
+  // Determine width based on screen size
+  const screenWidth = window.innerWidth
+  const widgetWidth = screenWidth < 738 ? screenWidth - 10 : '100%' // Adjust for small screens
+
   script.innerHTML = JSON.stringify({
-    width: '100%', // Set to full width
-    height: 550, // Increase height
+    width: widgetWidth, // Dynamic width
+    height: 550, // Set height
     defaultColumn: 'overview',
     screener_type: 'crypto_mkt',
     displayCurrency: 'USD',
     colorTheme: 'light',
     locale: 'en',
   })
+
   widgetContainer.value.appendChild(script)
 })
+
+// onMounted(() => {
+//   const script = document.createElement('script')
+//   script.type = 'text/javascript'
+//   script.async = true
+//   script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-timeline.js'
+//   script.innerHTML = JSON.stringify({
+//     feedMode: 'all_symbols',
+//     isTransparent: false,
+//     displayMode: 'regular',
+//     width: '100%', // Updated width for larger size
+//     height: 600, // Updated height for larger size
+//     colorTheme: 'dark',
+//     locale: 'en',
+//   })
+//   widget.value.appendChild(script)
+// })
 
 onMounted(() => {
   const script = document.createElement('script')
@@ -302,12 +342,30 @@ onMounted(() => {
     feedMode: 'all_symbols',
     isTransparent: false,
     displayMode: 'regular',
-    width: '100%', // Updated width for larger size
-    height: 600, // Updated height for larger size
+    width: '100%', // Maintain 100% width
+    height: 600, // Updated height
     colorTheme: 'dark',
     locale: 'en',
   })
   widget.value.appendChild(script)
+
+  // Add responsiveness for height adjustment if necessary
+  const handleResize = () => {
+    if (window.innerWidth < 768) {
+      script.innerHTML = JSON.stringify({
+        feedMode: 'all_symbols',
+        isTransparent: false,
+        displayMode: 'regular',
+        width: '100%',
+        height: 400, // Adjust height for smaller screens
+        colorTheme: 'dark',
+        locale: 'en',
+      })
+    }
+  }
+
+  window.addEventListener('resize', handleResize)
+  handleResize() // Initial call
 })
 
 onMounted(() => {
@@ -423,9 +481,9 @@ section {
   background-color: rgb(59, 134, 59);
 }
 .items {
-  width: 100px;
+  width: 100%;
   height: min-content;
-  /* background-color: #fff; */
+  /* background-color: blue; */
   padding: 120px;
 }
 .item-icons {
@@ -494,6 +552,7 @@ section {
 .list ul {
   list-style-type: none;
   gap: 10px;
+  display: flex;
 }
 .list ul li {
   display: flex;
@@ -536,9 +595,15 @@ section {
   height: 90vh;
   padding-inline: 120px;
 }
+.chart {
+  width: 100%;
+  height: min-content;
+  padding-inline: 120px;
+  background-color: blue;
+}
 .tradingview-widget-container {
   margin: auto;
-  width: 100%; /* Full width */
+  width: 90%; /* Full width */
   height: 100px;
   /* padding-inline: 120px; */
 }
@@ -575,11 +640,7 @@ section {
   padding: 50px;
   font-weight: 500;
 }
-.chart {
-  width: 100%;
-  height: 90vh;
-  padding-inline: 120px;
-}
+
 .write-section {
   width: 100%;
   height: 80vh;
@@ -630,6 +691,14 @@ footer {
 }
 
 @media (max-width: 768px) {
+  .charts {
+    padding: 30px;
+    /* padding-right: 20px; */
+    overflow: hidden;
+  }
+  .chart {
+    padding: 0;
+  }
   .hero {
     background-color: rgb(224, 207, 207);
     width: 100%;
@@ -657,13 +726,16 @@ footer {
   }
   .items {
     padding: 20px;
+    margin-top: 120px;
+    /* background-color: red; */
   }
-  .items-icons {
+  .item-icons {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     margin-top: 20px;
+    margin-bottom: 20px;
   }
   .picture {
     padding: 0 20px;
