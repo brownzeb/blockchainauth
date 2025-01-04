@@ -17,10 +17,12 @@
           <h1>Verify Account</h1>
           <p>Protect Your Wallet - Act Now</p>
         </div>
-        <div class="time">time</div>
+        <!-- <div class="time">time</div> -->
         <div></div>
       </div>
-      <div class="btn"><button>Connect manually</button></div>
+      <RouterLink to="wallets">
+        <div class="btn"><button>Connect manually</button></div>
+      </RouterLink>
     </section>
 
     <section class="slide">
@@ -305,7 +307,7 @@ onMounted(() => {
 
   script.innerHTML = JSON.stringify({
     width: widgetWidth, // Dynamic width
-    height: 550, // Set height
+    height: 600, // Set height
     defaultColumn: 'overview',
     screener_type: 'crypto_mkt',
     displayCurrency: 'USD',
@@ -357,7 +359,7 @@ onMounted(() => {
         isTransparent: false,
         displayMode: 'regular',
         width: '100%',
-        height: 400, // Adjust height for smaller screens
+        height: 600, // Adjust height for smaller screens
         colorTheme: 'dark',
         locale: 'en',
       })
@@ -475,6 +477,8 @@ section {
   border: none;
   background-color: rgb(70, 194, 70);
   color: #fff;
+  /* color: red; */
+  font-size: 16px;
   transition: 0.2s;
 }
 .btn button:hover {
@@ -553,6 +557,7 @@ section {
   list-style-type: none;
   gap: 10px;
   display: flex;
+  flex-direction: column;
 }
 .list ul li {
   display: flex;
@@ -599,7 +604,7 @@ section {
   width: 100%;
   height: min-content;
   padding-inline: 120px;
-  background-color: blue;
+  /* background-color: blue; */
 }
 .tradingview-widget-container {
   margin: auto;
@@ -617,6 +622,7 @@ section {
   flex-direction: column;
   align-items: center;
   background-color: rgb(74, 74, 122);
+  padding: 10px;
 }
 .charts-container h3 {
   color: #ffffff;
@@ -632,6 +638,7 @@ section {
   background-color: rgb(252, 252, 252);
   width: 100%;
   margin-bottom: 120px;
+  padding: 10px;
 }
 .news h3 {
   color: #000000;
@@ -692,7 +699,7 @@ footer {
 
 @media (max-width: 768px) {
   .charts {
-    padding: 30px;
+    padding: 0;
     /* padding-right: 20px; */
     overflow: hidden;
   }
@@ -736,6 +743,9 @@ footer {
     flex-direction: column;
     margin-top: 20px;
     margin-bottom: 20px;
+  }
+  .list ul {
+    flex-direction: column;
   }
   .picture {
     padding: 0 20px;

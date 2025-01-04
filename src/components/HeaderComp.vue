@@ -43,7 +43,7 @@ header {
   border-radius: 12px;
   text-decoration: none;
   color: white;
-  font-size: 12px;
+  font-size: 16px;
   white-space: nowrap;
 }
 .flag {
