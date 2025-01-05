@@ -107,7 +107,7 @@ footer {
   background-color: #333; /* Optional footer styling */
   color: white;
   text-align: center;
-  padding: 10px;
+  /* padding: 10px; */
 }
 
 .hero {
@@ -158,7 +158,7 @@ footer {
   background-color: rgb(17, 35, 61);
 }
 .wallets {
-  padding: 10px;
+  /* padding: 10px; */
   width: 100%;
   height: 500px;
   text-align: center;
