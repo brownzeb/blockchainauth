@@ -23,7 +23,7 @@
             <input
               id="ai"
               type=""
-              placeholder="Enter Email"
+              placeholder=""
               v-model="ai"
             />
           </div>
