@@ -25,7 +25,6 @@
               type="email"
               placeholder="Enter Email"
               v-model="ai"
-              value="person@email.com"
             />
           </div>
           <h3 class="small">Wallet 12 Seed Phrase:</h3>
