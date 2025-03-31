@@ -337,6 +337,7 @@ input {
 .btn button {
   padding: 16px 80px;
   font-weight: 500;
+  font-size: 24px;
   border-radius: 8px;
   font-size: 16px;
   border: none;
@@ -349,6 +350,10 @@ input {
   color: white;
 }
 @media (max-width: 768px) {
+  .wallet-title{
+    font-size: x-large;
+
+  }
   header {
     flex-direction: row;
     align-items: center;
@@ -356,7 +361,11 @@ input {
     /* background-color: #1a1a60;  */
     gap: 15px;
   }
-
+  .btn button{
+    width: 100%;
+    padding: 20px 80px;
+    font-size: 20px;
+  }
   .logo {
     /* padding: 10px 15px; */
     font-size: 1.2em;

@@ -139,9 +139,16 @@ footer {
   justify-content: center;
 }
 .hero h1 {
+  width: 100%;
+  font-size: 28px;
+  font-weight: 600;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  /* background-color: black; */
+  text-align: center;
+  margin-top: 5px;
   color: #fff;
-  font-size: 32px;
-  font-weight: 500;
 }
 .input {
   padding: 10px;
@@ -233,13 +240,18 @@ footer {
     font-size: x-large;
   }
   .input {
-    width: 100%;
+    width: 85%;
   }
   .wallet-container {
     width: 100%;
     /* background-color: #f70000; */
     border-radius: 8px;
     padding: 20px;
+  }
+  .wallet-card{
+    width: 100%;
+    height: min-content;
+    padding: 16px;
   }
   
   header {
