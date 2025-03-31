@@ -1,6 +1,5 @@
 <template>
   <div class="wallet">
-    <!-- <HeaderComp /> -->
     <section>
       <header>
         <router-link to="/" class="logo">
@@ -8,23 +7,24 @@
         </router-link>
         <div class="nav">
           <router-link :to="{ name: 'home' }">Authenticate Wallet</router-link>
-          <!-- <div class="flag"></div> -->
         </div>
       </header>
     </section>
     <section class="hero">
       <h1>Authenticate Wallet</h1>
+      <div style="color: white; margin-top:20px; margin-bottom:10px;">Search Wallet</div>
+
       <div class="input">
-        <input type="text" />
-        <button>search</button>
+        <input type="text" v-model="searchTerm" placeholder="Search wallets..." />
+        <!-- <button @click="filterWallets">Search</button> -->
       </div>
     </section>
 
     <section class="wallets">
       <h2>Choose your wallet</h2>
-      <div class="wallet-container">
+      <div class="wallet-container" v-if="filteredWallets.length > 0">
         <router-link
-          v-for="wallet in walletStore.wallets"
+          v-for="wallet in filteredWallets"
           :key="wallet.id"
           :to="{ name: 'WalletDetails', params: { id: wallet.id } }"
           class="wallet-card"
@@ -35,22 +35,41 @@
           </div>
         </router-link>
       </div>
+      <p v-else class="no-wallet">Wallet not found</p>
       <FooterComp />
     </section>
   </div>
 </template>
 
 <script setup>
+import { ref, computed } from 'vue'
 import logo from '@/assets/logo.png'
 import FooterComp from '@/components/FooterComp.vue'
-// import HeaderComp from '@/components/HeaderComp.vue'
 import { useWalletStore } from '@/stores/walletStore'
 
-// Use the wallet store
 const walletStore = useWalletStore()
+const searchTerm = ref('')
+
+const filteredWallets = computed(() => {
+  return walletStore.wallets.filter(wallet =>
+    wallet.title.toLowerCase().includes(searchTerm.value.toLowerCase())
+  )
+})
 </script>
 
+
 <style scoped>
+.no-wallet {
+  font-size: 20px;
+  color: #ff4d4d;
+  /* font-weight: bold; */
+  margin: 20px;
+  padding: 10px;
+  background: #ffe6e6;
+  border-radius: 5px;
+  display: inline-block;
+}
+
 header {
   width: 100%;
   height: 70px;
@@ -122,7 +141,7 @@ footer {
 .hero h1 {
   color: #fff;
   font-size: 32px;
-  font-weight: 300;
+  font-weight: 500;
 }
 .input {
   padding: 10px;
@@ -162,11 +181,11 @@ footer {
   width: 100%;
   height: 500px;
   text-align: center;
+  margin-top: 20px;
 }
 .wallets h2 {
   font-size: 32px;
-  padding-top: 20px;
-  font-weight: 300;
+  font-weight: 400;
 }
 .wallet-container {
   display: flex;
@@ -182,13 +201,15 @@ footer {
 
 .wallet-card {
   width: 240px;
+  border-radius: 8px;
   height: 200px;
   background-color: rgb(228, 228, 228);
-  box-shadow: #f70000;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   text-decoration: none;
 }
 .title {
   width: 100%;
+  border-radius:8px 8px 0   0;
   height: 40px;
   background-color: rgb(28, 47, 75);
   color: #fff;
@@ -220,9 +241,7 @@ footer {
     border-radius: 8px;
     padding: 20px;
   }
-  .wallet-card {
-    width: 100%;
-  }
+  
   header {
     flex-direction: row;
     align-items: center;

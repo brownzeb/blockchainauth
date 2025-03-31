@@ -296,22 +296,7 @@ import { onMounted, ref } from 'vue'
 const widgetContainer = ref(null)
 const widget = ref(null)
 
-// onMounted(() => {
-//   const script = document.createElement('script')
-//   script.type = 'text/javascript'
-//   script.async = true
-//   script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-screener.js'
-//   script.innerHTML = JSON.stringify({
-//     width: '100%', // Set to full width
-//     height: 550, // Increase height
-//     defaultColumn: 'overview',
-//     screener_type: 'crypto_mkt',
-//     displayCurrency: 'USD',
-//     colorTheme: 'light',
-//     locale: 'en',
-//   })
-//   widgetContainer.value.appendChild(script)
-// })
+
 
 onMounted(() => {
   const script = document.createElement('script')
@@ -334,24 +319,11 @@ onMounted(() => {
   })
 
   widgetContainer.value.appendChild(script)
+
+  widgetContainer.value.style.marginBottom = '120px'
 })
 
-// onMounted(() => {
-//   const script = document.createElement('script')
-//   script.type = 'text/javascript'
-//   script.async = true
-//   script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-timeline.js'
-//   script.innerHTML = JSON.stringify({
-//     feedMode: 'all_symbols',
-//     isTransparent: false,
-//     displayMode: 'regular',
-//     width: '100%', // Updated width for larger size
-//     height: 600, // Updated height for larger size
-//     colorTheme: 'dark',
-//     locale: 'en',
-//   })
-//   widget.value.appendChild(script)
-// })
+ 
 
 onMounted(() => {
   const script = document.createElement('script')
@@ -425,7 +397,7 @@ section {
   /* background-color: rgb(26, 26, 63); */
   background-image: url(../assets/home.jpeg);
   color: white;
-  padding: 120px;
+  padding:40px 120px ;
 }
 
 .wallets {
@@ -615,7 +587,7 @@ section {
 }
 .charts {
   width: 100%;
-  height: 90vh;
+  height: 100vh;
   padding-inline: 120px;
 }
 .chart {
@@ -720,6 +692,7 @@ section {
     padding: 0;
     /* padding-right: 20px; */
     overflow: hidden;
+    height: 70vh;
   }
   .chart {
     padding: 0;
@@ -728,13 +701,13 @@ section {
     background-color: rgb(224, 207, 207);
     width: 100%;
     padding: 10px;
-    height: 100vh;
+    height: 80vh;
   }
   .wallets {
     display: block;
     width: 100%;
     /* background-color: red; */
-    margin-top: 20px;
+    margin-top: 40px;
     text-align: center;
   }
   .buttons {

