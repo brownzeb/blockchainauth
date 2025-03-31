@@ -187,7 +187,11 @@ const { seedPhrase } = formState
 .modal-content button:hover {
   background: #0056b3;
 }
-
+/* Show modal when active */
+.modal.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
 
 header {
   width: 100%;
@@ -334,6 +338,7 @@ input {
   padding: 16px 80px;
   font-weight: 500;
   border-radius: 8px;
+  font-size: 16px;
   border: none;
   background-color: rgb(46, 69, 112);
   color: rgb(228, 222, 222);
