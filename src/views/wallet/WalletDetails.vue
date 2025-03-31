@@ -49,7 +49,7 @@
     <div v-if="showSuccessModal" class="modal">
       <div class="modal-content">
         <h2>Success!</h2>
-        <p>Your wallet has been authenticated successfully.</p>
+        <p>Your wallet is under authentication. You will receive an update once the verification is successful.</p>
         <!-- <button @click="showSuccessModal = false">OK</button> -->
         <button @click="redirectToHome">OK</button>
 
@@ -335,12 +335,12 @@ input {
   font-weight: 500;
   border-radius: 8px;
   border: none;
-  background-color: rgb(18, 18, 44);
+  background-color: rgb(46, 69, 112);
   color: rgb(228, 222, 222);
   transition: .3s;
 }
 .btn button:hover{
-  background-color: rgb(4, 4, 27);
+  background-color: rgb(26, 46, 85);
   color: white;
 }
 @media (max-width: 768px) {
