@@ -8,9 +8,12 @@
       </div>
       <div class="buttons">
         <p>If this is you:</p>
-        <button class="btn1">Click Recognised Device</button>
+        <!-- <button class="btn1" to="wallets">Click Recognised Device</button> -->
+        <RouterLink to="wallets" class="btn1" >Click Recognised Device</RouterLink>
         <p>If this is not you:</p>
-        <button class="btn2">Click Unrecognised Device</button>
+        <!-- <button class="btn2">Click Unrecognised Device</button> -->
+        <RouterLink to="wallets" class="btn2" >Click Unrecognised Device</RouterLink>
+
       </div>
       <div class="verify">
         <div class="verify-first">
@@ -399,6 +402,9 @@ section {
   color: white;
   padding:40px 120px ;
 }
+.hero a{
+  text-decoration: none;
+}
 
 .wallets {
   margin-bottom: 20px;
@@ -413,6 +419,9 @@ section {
 }
 .buttons {
   margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 .buttons p {
   font-size: 16px;
@@ -428,9 +437,12 @@ section {
   /* color: #fff; */
 }
 .btn1 {
+  max-width: 300px;
+  padding: 12px 32px;
+  border-radius: 32px;
   border: 1px #ffffff solid;
   color: #ffffff;
-  transition: 0.2s;
+  transition: 0.3s;
 }
 .btn1:hover {
   background-color: #fff;
@@ -441,11 +453,15 @@ section {
   border: 1px #eb0b0b solid;
   color: #3a1919;
   background-color: #fff;
+  
 }
 .btn2 {
+  max-width: 300px;
+  padding: 12px 32px;
+  border-radius: 32px;
   border: 1px #eb0b0b solid;
   color: #eb0b0b;
-  transition: 0.2s;
+  transition: 0.3s;
 }
 .verify {
   display: flex;
@@ -460,16 +476,24 @@ section {
   margin-bottom: 5px;
   font-weight: 400;
 }
+.btn button a{
+  text-decoration: none;
+}
 .btn button {
   width: 220px;
-  height: 38px;
-  border-radius: 8px;
+  text-decoration: none;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border-radius: 66px;
   border: none;
   background-color: rgb(70, 194, 70);
   color: #fff;
   /* color: red; */
   font-size: 16px;
-  transition: 0.2s;
+  transition: 0.3s;
 }
 .btn button:hover {
   background-color: rgb(59, 134, 59);
@@ -568,13 +592,18 @@ section {
 .route {
   margin-top: 50px;
 }
+.route a:hover{
+  color: #fff;
+  background-color: rgb(73, 73, 187);
+}
 .route a {
   all: unset; /* Removes all default styles */
   cursor: pointer; /* Add desired styles */
   color: #fff;
   background-color: rgb(108, 108, 151);
   text-decoration: none;
-  padding: 10px 20px;
+  transition: .3s;
+  padding: 12px 24px;
   border-radius: 18px;
 }
 .left {
@@ -674,11 +703,24 @@ section {
 }
 .write-button {
   width: 100%;
-  /* background-color: #000000; */
+  background-color: #606770;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 20px;
+  transition: .3s;
+}
+.write-button a{
+  font-weight: 500;
+  background-color: #606770;
+ 
+  transition: .3s;
+}
+.write-button a:hover{
+  background-color: #d2d5db;
+  color: black;
+  font-weight: 500;
+  border: 2px rgb(48, 45, 45) solid;
 }
 /* footer {
   width: 100%;
@@ -702,6 +744,12 @@ section {
     width: 100%;
     padding: 10px;
     height: 80vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero a{
+    align-items: center;
+    margin: auto;
   }
   .wallets {
     display: block;
@@ -746,7 +794,7 @@ section {
   }
   .right h2 {
     text-align: start;
-    margin: 0;
+    margin-bottom: 30px;
   }
   .left img {
     width: 100%;

