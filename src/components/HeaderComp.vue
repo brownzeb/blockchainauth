@@ -40,7 +40,7 @@ header {
 .nav a {
   background-color: rgb(46, 69, 112);
   padding: 10px 20px;
-  border-radius: 12px;
+  border-radius: 20px;
   text-decoration: none;
   color: white;
   font-size: 16px;
@@ -95,9 +95,6 @@ header {
     padding: 8px 10px;
   }
 
-  .nav a {
-    /* font-size: 0.8em; */
-    /* padding: 6px 10px; */
-  }
+ 
 }
 </style>
