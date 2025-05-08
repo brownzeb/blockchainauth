@@ -114,16 +114,16 @@ header {
   width: 100%;
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Full viewport height */
+  min-height: 100vh; 
 }
 
 .hero,
 .wallets {
-  flex-grow: 1; /* These sections expand to push the footer down */
+  flex-grow: 1; 
 }
 
 footer {
-  background-color: #333; /* Optional footer styling */
+  background-color: #333; 
   color: white;
   text-align: center;
   /* padding: 10px; */
